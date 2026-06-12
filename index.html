@@ -1,76 +1,100 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Pits Burger Stunden</title>
+<meta name="theme-color" content="#111827">
 <link rel="manifest" href="manifest.json">
 <style>
-:root{--bg:#0b1220;--card:#111827;--muted:#94a3b8;--text:#f8fafc;--accent:#22c55e;--danger:#ef4444;--line:#263244;--input:#0f172a}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);padding:14px}h1{font-size:24px;margin:8px 0 14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 8px 20px rgba(0,0,0,.18)}label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}input,select,button,textarea{width:100%;font-size:16px;border-radius:12px;border:1px solid var(--line);padding:11px;background:var(--input);color:var(--text)}button{background:#1f2937;font-weight:700}button.primary{background:var(--accent);color:#052e16;border:0}button.danger{background:#3b1116;color:#fecaca;border-color:#7f1d1d}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.muted{color:var(--muted);font-size:13px}.total{font-size:28px;font-weight:800}.shift{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;background:#0b1220}.shift-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.shift-title{font-weight:800}.smallbtn{width:auto;padding:8px 10px;font-size:13px}.day{border-top:1px solid var(--line);padding:12px 0}.day:first-child{border-top:0}.day-title{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge{font-size:13px;background:#172033;border:1px solid var(--line);padding:6px 9px;border-radius:999px}.hidden{display:none}.footer{height:40px}.ok{color:#86efac}.warn{color:#fde68a}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}textarea{height:120px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}a{color:#60a5fa}.hint{background:#132014;border:1px solid #315c35;border-radius:12px;padding:10px;margin-top:10px;color:#d9f99d}
+:root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--line:#273449;--text:#f8fafc;--accent:#22c55e;--danger:#ef4444;--input:#0b1220}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--text);padding:14px;padding-bottom:50px}h1{font-size:24px;margin:6px 0 12px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 8px 24px rgba(0,0,0,.18)}label{font-size:13px;color:var(--muted);display:block;margin-bottom:6px}input,select,button,textarea{font-size:16px;border-radius:12px;border:1px solid var(--line);background:var(--input);color:var(--text);padding:12px;width:100%}button{background:#1f2937;font-weight:700;border-color:#374151}button.primary{background:var(--accent);color:#052e16;border:0}button.danger{background:#3b1111;color:#fecaca;border-color:#7f1d1d}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.small{font-size:12px;color:var(--muted)}.total{font-size:28px;font-weight:800}.shift{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;background:#0b1220}.shiftHead{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}.miniBtn{padding:8px 10px;font-size:13px;width:auto;border-radius:10px}.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px}.dayBtn{min-width:48px;padding:10px 6px}.dayBtn.active{background:var(--accent);color:#052e16}.pauseBtns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:6px}.pauseBtns button{padding:9px 5px;font-size:13px}.ok{color:#86efac}.warn{color:#fcd34d}.table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left}th{color:var(--muted);font-weight:600}.footerBtns{position:sticky;bottom:0;background:linear-gradient(transparent,var(--bg) 18%);padding-top:22px}.empty{padding:12px;border:1px dashed var(--line);border-radius:12px;color:var(--muted)}
 </style>
 </head>
 <body>
-<h1>🍔 Pits Burger Stunden</h1>
+<h1>🍔 Stunden-Erfassung</h1>
+<div id="status" class="small warn">App lädt …</div>
 <div class="card">
-  <div id="status" class="ok">JavaScript läuft. App ist bereit.</div>
-  <label>Mitarbeiter</label>
-  <select id="employeeSelect"></select>
-  <div class="row">
-    <div><label>Neuer Mitarbeiter</label><input id="newEmployee" placeholder="Name eingeben"></div>
-    <div style="display:flex;align-items:end"><button class="primary" id="addEmployeeBtn">Hinzufügen</button></div>
-  </div>
-  <div class="row">
-    <div><label>Monat</label><input type="month" id="monthInput"></div>
-    <div><label>Monatssumme</label><div class="total"><span id="monthTotal">0,00</span> h</div></div>
-  </div>
-  <div class="hint">Neu: Pro Tag kannst du mehrere Schichten eintragen, z. B. vormittags Schorndorf und abends Plüderhausen.</div>
+ <div class="row">
+  <div><label>Mitarbeiter</label><select id="employee"></select></div>
+  <div><label>Monat</label><input id="month" type="month"></div>
+ </div>
+ <div style="margin-top:10px" class="row">
+  <input id="newEmployee" placeholder="Mitarbeiter Name">
+  <button class="primary" id="addEmployeeBtn">+ Anlegen</button>
+ </div>
+ <button style="margin-top:10px" id="deleteEmployeeBtn" class="danger">Ausgewählten Mitarbeiter löschen</button>
+ <div class="small" style="margin-top:8px">Es gibt keine festen 20 Mitarbeiter mehr. Du legst nur deine echten Mitarbeiter selbst an.</div>
 </div>
-
 <div class="card">
-  <div class="actions">
-    <button id="exportBtn">CSV exportieren</button>
-    <button id="backupBtn">Backup kopieren</button>
-  </div>
-  <label>Backup einfügen</label>
-  <textarea id="backupText" placeholder="Backup hier einfügen..."></textarea>
-  <button id="restoreBtn">Backup wiederherstellen</button>
+ <label>Tag auswählen</label>
+ <div class="days" id="days"></div>
 </div>
-
-<div id="days" class="card"></div>
-<div class="footer"></div>
+<div class="card">
+ <div class="shiftHead"><strong id="dayTitle">Tag</strong><button class="primary miniBtn" id="addShiftBtn">+ Schicht</button></div>
+ <div id="shifts"></div>
+ <div class="small">Mehrere Schichten pro Tag sind möglich, z. B. vormittags Schorndorf und abends Plüderhausen.</div>
+</div>
+<div class="card">
+ <strong>Monatsauswertung</strong>
+ <div class="small" style="margin:6px 0">Aufgeteilt nach Filiale, Bereich und Kennzeichen für den ausgewählten Mitarbeiter und Monat.</div>
+ <div style="overflow:auto;margin-top:8px"><table class="table"><thead><tr><th>Filiale</th><th>Stunden</th></tr></thead><tbody id="branchSummary"></tbody></table></div>
+ <div style="overflow:auto;margin-top:12px"><table class="table"><thead><tr><th>Bereich</th><th>Stunden</th></tr></thead><tbody id="roleSummary"></tbody></table></div>
+ <div style="overflow:auto;margin-top:12px"><table class="table"><thead><tr><th>Kennzeichen</th><th>Stunden</th></tr></thead><tbody id="plateSummary"></tbody></table></div>
+</div>
+<div class="card">
+ <div class="small">Tagessumme</div><div class="total" id="dayTotal">0,00 h</div>
+ <div class="small">Monatssumme Mitarbeiter</div><div class="total" id="monthTotal">0,00 h</div>
+</div>
+<div class="card">
+ <strong>Monatsübersicht</strong>
+ <div style="overflow:auto;margin-top:8px"><table class="table"><thead><tr><th>Datum</th><th>Schichten</th><th>Stunden</th></tr></thead><tbody id="summary"></tbody></table></div>
+</div>
+<div class="footerBtns row"><button id="csvBtn">CSV Backup</button><button id="clearBtn" class="danger">Alle Daten löschen</button></div>
 <script>
-(function(){
-const STORAGE_KEY='pits_stunden_app_v_multi_shift_1';
-const filialen=['Schorndorf','Plüderhausen','Urbach'];
-const defaultEmployees=Array.from({length:20},(_,i)=>'Mitarbeiter '+(i+1));
-let state=load();
-const $=id=>document.getElementById(id);
-function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{employees:defaultEmployees,entries:{}}}catch(e){return{employees:defaultEmployees,entries:{}}}}
-function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
-function pad(n){return String(n).padStart(2,'0')}
+(function(){'use strict';
+const STORAGE='pits_stunden_v_roles_1';
+const OLD_KEYS=['pits_stunden_v_multi_2','pits_stunden_v_multi_1','pits_stunden_v_final'];
+const branches=['Schorndorf','Plüderhausen','Urbach'];
+const roles=['Service','Küche','Fahrer'];
+const plates=['144','146','196'];
+let state={employees:[],entries:{}}; let selectedDay=1;
+const $=id=>document.getElementById(id); const pad=n=>String(n).padStart(2,'0');
 function todayMonth(){const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)}
-function daysInMonth(ym){const [y,m]=ym.split('-').map(Number);return new Date(y,m,0).getDate()}
-function calcHours(start,end,pause){if(!start||!end)return 0;const [sh,sm]=start.split(':').map(Number);const [eh,em]=end.split(':').map(Number);let s=sh*60+sm,e=eh*60+em;if(e<s)e+=24*60;let mins=e-s-(Number(pause)||0);return Math.max(0,mins/60)}
-function key(emp,ym,day){return emp+'|'+ym+'|'+day}
-function getShifts(emp,ym,day){const k=key(emp,ym,day); if(!state.entries[k]) state.entries[k]=[]; return state.entries[k];}
-function renderEmployees(){const sel=$('employeeSelect');sel.innerHTML='';state.employees.forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);});}
-function render(){renderEmployees(); if(!$('monthInput').value) $('monthInput').value=todayMonth(); renderDays();}
-function renderDays(){const emp=$('employeeSelect').value;const ym=$('monthInput').value||todayMonth();const wrap=$('days');let total=0;wrap.innerHTML='<div class="muted">Monat: '+ym+' · Mitarbeiter: '+emp+'</div>';for(let d=1;d<=daysInMonth(ym);d++){const shifts=getShifts(emp,ym,d);let dayTotal=shifts.reduce((a,s)=>a+calcHours(s.start,s.end,s.pause),0);total+=dayTotal;const day=document.createElement('div');day.className='day';day.innerHTML='<div class="day-title"><strong>'+pad(d)+'.</strong><span class="badge">'+dayTotal.toFixed(2).replace('.',',')+' h</span></div><div id="shifts_'+d+'"></div><button class="smallbtn primary" data-add="'+d+'">+ Schicht hinzufügen</button>';wrap.appendChild(day);const sw=day.querySelector('#shifts_'+d);if(shifts.length===0){const p=document.createElement('div');p.className='muted';p.style.margin='8px 0';p.textContent='Keine Schicht eingetragen';sw.appendChild(p)}shifts.forEach((s,idx)=>{const div=document.createElement('div');div.className='shift';div.innerHTML='<div class="shift-head"><div class="shift-title">Schicht '+(idx+1)+' · '+calcHours(s.start,s.end,s.pause).toFixed(2).replace('.',',')+' h</div><button class="smallbtn danger" data-del="'+d+'|'+idx+'">Löschen</button></div><label>Filiale</label><select data-field="filiale" data-day="'+d+'" data-idx="'+idx+'">'+filialen.map(f=>'<option '+(s.filiale===f?'selected':'')+'>'+f+'</option>').join('')+'</select><div class="row3"><div><label>Beginn</label><input type="time" value="'+(s.start||'')+'" data-field="start" data-day="'+d+'" data-idx="'+idx+'"></div><div><label>Ende</label><input type="time" value="'+(s.end||'')+'" data-field="end" data-day="'+d+'" data-idx="'+idx+'"></div><div><label>Pause Min.</label><input type="number" min="0" step="5" value="'+(s.pause||0)+'" data-field="pause" data-day="'+d+'" data-idx="'+idx+'"></div></div><label>Notiz</label><input placeholder="optional" value="'+(s.note||'').replace(/"/g,'&quot;')+'" data-field="note" data-day="'+d+'" data-idx="'+idx+'">';sw.appendChild(div);});}
-$('monthTotal').textContent=total.toFixed(2).replace('.',',');}
-function addShift(day){const emp=$('employeeSelect').value,ym=$('monthInput').value;getShifts(emp,ym,day).push({filiale:'Schorndorf',start:'',end:'',pause:0,note:''});save();renderDays();}
-function updateShift(day,idx,field,value){const emp=$('employeeSelect').value,ym=$('monthInput').value;const shifts=getShifts(emp,ym,day);if(!shifts[idx])return;shifts[idx][field]=value;save();renderDays();}
-function delShift(day,idx){const emp=$('employeeSelect').value,ym=$('monthInput').value;getShifts(emp,ym,day).splice(idx,1);save();renderDays();}
-function addEmployee(){const name=$('newEmployee').value.trim();if(!name)return alert('Bitte Namen eingeben.');if(state.employees.includes(name))return alert('Mitarbeiter gibt es schon.');state.employees.push(name);$('newEmployee').value='';save();render();$('employeeSelect').value=name;renderDays();}
-function csvEscape(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
-function exportCsv(){const emp=$('employeeSelect').value,ym=$('monthInput').value;let rows=[['Mitarbeiter','Monat','Tag','Filiale','Beginn','Ende','Pause Minuten','Netto Stunden','Notiz']];for(let d=1;d<=daysInMonth(ym);d++){getShifts(emp,ym,d).forEach(s=>rows.push([emp,ym,pad(d),s.filiale,s.start,s.end,s.pause,calcHours(s.start,s.end,s.pause).toFixed(2),s.note||'']));}
-const csv=rows.map(r=>r.map(csvEscape).join(';')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='stunden_'+emp.replace(/\s+/g,'_')+'_'+ym+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
-function backup(){const txt=JSON.stringify(state);navigator.clipboard?.writeText(txt).then(()=>alert('Backup wurde kopiert.')).catch(()=>{$('backupText').value=txt;alert('Backup steht im Textfeld. Bitte kopieren.');});}
-function restore(){try{const data=JSON.parse($('backupText').value);if(!data.employees||!data.entries)throw new Error();state=data;save();render();alert('Backup wiederhergestellt.');}catch(e){alert('Backup konnte nicht gelesen werden.');}}
-$('addEmployeeBtn').addEventListener('click',addEmployee);$('employeeSelect').addEventListener('change',renderDays);$('monthInput').addEventListener('change',renderDays);$('exportBtn').addEventListener('click',exportCsv);$('backupBtn').addEventListener('click',backup);$('restoreBtn').addEventListener('click',restore);
-$('days').addEventListener('click',e=>{if(e.target.dataset.add)addShift(Number(e.target.dataset.add)); if(e.target.dataset.del){const [d,i]=e.target.dataset.del.split('|').map(Number);delShift(d,i);}});
-$('days').addEventListener('change',e=>{const t=e.target;if(t.dataset.field)updateShift(Number(t.dataset.day),Number(t.dataset.idx),t.dataset.field,t.value);});
-$('days').addEventListener('input',e=>{const t=e.target;if(t.dataset.field)updateShift(Number(t.dataset.day),Number(t.dataset.idx),t.dataset.field,t.value);});
-render();
+function save(){localStorage.setItem(STORAGE,JSON.stringify(state))}
+function load(){try{let raw=localStorage.getItem(STORAGE); if(!raw){for(const k of OLD_KEYS){raw=localStorage.getItem(k); if(raw)break}} if(raw){state=JSON.parse(raw)}}catch(e){}
+ if(!Array.isArray(state.employees))state.employees=[]; if(!state.entries)state.entries={};
+ // Alte Dummy-Mitarbeiter entfernen, echte Namen behalten
+ state.employees=state.employees.filter(n=>!/^Mitarbeiter\s*\d+$/i.test(String(n).trim())); save();}
+function key(){return $('employee').value+'|'+$('month').value+'|'+selectedDay}
+function hasEmployee(){return state.employees.length>0 && $('employee').value}
+function getShifts(){if(!hasEmployee())return []; const k=key(); if(!state.entries[k])state.entries[k]=[]; return state.entries[k]}
+function parseMin(t){if(!t)return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m))return null; return h*60+m}
+function hours(start,end,pause){let s=parseMin(start),e=parseMin(end),p=Number(pause)||0; if(s===null||e===null)return 0; if(e<s)e+=1440; return Math.max(0,(e-s-p)/60)}
+function fmt(n){return (Math.round(n*100)/100).toFixed(2).replace('.',',')+' h'}
+function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function renderEmployees(){const sel=$('employee'), old=sel.value; sel.innerHTML=''; if(!state.employees.length){const o=document.createElement('option');o.value='';o.textContent='Bitte Mitarbeiter anlegen';sel.appendChild(o);return} state.employees.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)}); if(state.employees.includes(old))sel.value=old}
+function renderDays(){const [y,m]=$('month').value.split('-').map(Number); const count=new Date(y,m,0).getDate(); const box=$('days'); box.innerHTML=''; for(let d=1;d<=count;d++){const b=document.createElement('button'); b.className='dayBtn'+(d===selectedDay?' active':''); b.textContent=d; b.onclick=()=>{selectedDay=d;render()}; box.appendChild(b)}}
+function renderShifts(){const box=$('shifts'); $('dayTitle').textContent=pad(selectedDay)+'.'+$('month').value.split('-')[1]+'.'; box.innerHTML=''; if(!hasEmployee()){box.innerHTML='<div class="empty">Lege zuerst einen Mitarbeiter an.</div>';return} const shifts=getShifts(); if(!shifts.length)box.innerHTML='<div class="empty">Noch keine Schicht für diesen Tag.</div>';
+ shifts.forEach((s,i)=>{if(!s.role)s.role='Service'; const total=hours(s.start,s.end,s.pause); const div=document.createElement('div'); div.className='shift'; div.innerHTML=`
+ <div class="shiftHead"><strong>Schicht ${i+1} · ${fmt(total)}</strong><button class="danger miniBtn" data-del="${i}">Löschen</button></div>
+ <div class="row"><div><label>Filiale</label><select data-field="branch" data-i="${i}">${branches.map(b=>`<option ${s.branch===b?'selected':''}>${b}</option>`).join('')}</select></div><div><label>Bereich</label><select data-field="role" data-i="${i}">${roles.map(r=>`<option ${s.role===r?'selected':''}>${r}</option>`).join('')}</select></div></div>
+ <div class="row3" style="margin-top:10px"><div><label>Beginn</label><input type="time" data-field="start" data-i="${i}" value="${esc(s.start)}"></div><div><label>Ende</label><input type="time" data-field="end" data-i="${i}" value="${esc(s.end)}"></div><div><label>Pause Min.</label><input type="number" inputmode="numeric" pattern="[0-9]*" min="0" step="5" data-field="pause" data-i="${i}" value="${esc(s.pause??0)}"></div></div>
+ <div class="pauseBtns" data-pause-row="${i}"><button data-pause="0">0</button><button data-pause="15">15</button><button data-pause="30">30</button><button data-pause="45">45</button><button data-pause="60">60</button><button data-pause="75">75</button><button data-pause="90">90</button><button data-pause="120">120</button></div>
+ <div class="plateWrap" style="margin-top:10px;${s.role==='Fahrer'?'':'display:none'}"><label>Kennzeichen / Fahrzeug</label><select data-field="plate" data-i="${i}"><option value="">Bitte wählen</option>${plates.map(p=>`<option value="${p}" ${s.plate===p?'selected':''}>${p}</option>`).join('')}</select></div>`; box.appendChild(div)});
+ box.querySelectorAll('[data-field]').forEach(el=>{el.oninput=el.onchange=function(){const shifts=getShifts(); const i=Number(this.dataset.i), f=this.dataset.field; shifts[i][f]=this.value; if(f==='pause')shifts[i][f]=String(Math.max(0,Number(this.value)||0)); if(f==='role'&&this.value!=='Fahrer')shifts[i].plate=''; save(); render()}});
+ box.querySelectorAll('[data-del]').forEach(btn=>btn.onclick=()=>{getShifts().splice(Number(btn.dataset.del),1); save(); render()});
+ box.querySelectorAll('[data-pause]').forEach(btn=>btn.onclick=()=>{const i=Number(btn.closest('[data-pause-row]').dataset.pauseRow); getShifts()[i].pause=btn.dataset.pause; save(); render()});}
+function renderTotals(){let day=0; getShifts().forEach(s=>day+=hours(s.start,s.end,s.pause)); $('dayTotal').textContent=fmt(day); let month=0; if(hasEmployee()){const prefix=$('employee').value+'|'+$('month').value+'|'; Object.keys(state.entries).forEach(k=>{if(k.startsWith(prefix))state.entries[k].forEach(s=>month+=hours(s.start,s.end,s.pause))})} $('monthTotal').textContent=fmt(month)}
+function renderSummary(){const tbody=$('summary'); tbody.innerHTML=''; if(!hasEmployee()){tbody.innerHTML='<tr><td colspan="3" class="small">Noch kein Mitarbeiter angelegt</td></tr>';return} const prefix=$('employee').value+'|'+$('month').value+'|'; const rows=[]; Object.keys(state.entries).forEach(k=>{if(k.startsWith(prefix)){const d=Number(k.split('|')[2]), shifts=state.entries[k]; let sum=0; shifts.forEach(s=>sum+=hours(s.start,s.end,s.pause)); if(shifts.length)rows.push({d,shifts,sum})}}); rows.sort((a,b)=>a.d-b.d).forEach(r=>{const tr=document.createElement('tr'); tr.innerHTML=`<td>${pad(r.d)}.${$('month').value.split('-')[1]}.</td><td>${r.shifts.map(s=>`${esc(s.branch)} · ${esc(s.role||'')} ${s.plate?('· '+esc(s.plate)):''}<br>${esc(s.start)||'--'}-${esc(s.end)||'--'} (${esc(s.pause||0)}m)`).join('<br><br>')}</td><td>${fmt(r.sum)}</td>`; tbody.appendChild(tr)}); if(!rows.length)tbody.innerHTML='<tr><td colspan="3" class="small">Noch keine Einträge</td></tr>'}
+function addTo(obj,key,val){key=key||'Ohne Angabe'; obj[key]=(obj[key]||0)+val}
+function fillBreakdown(id,obj,empty){const tbody=$(id); tbody.innerHTML=''; const rows=Object.entries(obj).sort((a,b)=>b[1]-a[1]); if(!rows.length){tbody.innerHTML=`<tr><td colspan="2" class="small">${empty}</td></tr>`;return} rows.forEach(([name,val])=>{const tr=document.createElement('tr'); tr.innerHTML=`<td>${esc(name)}</td><td>${fmt(val)}</td>`; tbody.appendChild(tr)})}
+function renderBreakdowns(){const byBranch={}, byRole={}, byPlate={}; if(hasEmployee()){const prefix=$('employee').value+'|'+$('month').value+'|'; Object.keys(state.entries).forEach(k=>{if(k.startsWith(prefix)){state.entries[k].forEach(s=>{const h=hours(s.start,s.end,s.pause); if(h>0){addTo(byBranch,s.branch,h); addTo(byRole,s.role,h); if((s.role||'')==='Fahrer')addTo(byPlate,s.plate||'Ohne Kennzeichen',h)}})}})} fillBreakdown('branchSummary',byBranch,'Noch keine Filial-Stunden'); fillBreakdown('roleSummary',byRole,'Noch keine Bereich-Stunden'); fillBreakdown('plateSummary',byPlate,'Noch keine Fahrer-Stunden')}
+function render(){renderEmployees(); renderDays(); renderShifts(); renderTotals(); renderSummary(); renderBreakdowns()}
+function addEmployee(){const name=$('newEmployee').value.trim(); if(!name)return alert('Bitte Namen eingeben.'); if(!state.employees.includes(name))state.employees.push(name); $('newEmployee').value=''; save(); renderEmployees(); $('employee').value=name; render()}
+function deleteEmployee(){const emp=$('employee').value; if(!emp)return; if(!confirm(emp+' wirklich löschen? Die Stunden dieses Mitarbeiters bleiben im Backup, werden aber aus der Auswahl entfernt.'))return; state.employees=state.employees.filter(e=>e!==emp); save(); render()}
+function addShift(data){if(!hasEmployee())return alert('Bitte zuerst Mitarbeiter anlegen.'); getShifts().push(Object.assign({branch:branches[0],role:'Service',plate:'',start:'',end:'',pause:'0'},data||{})); save(); render()}
+function csv(){let lines=['Mitarbeiter;Monat;Datum;Filiale;Bereich;Kennzeichen;Beginn;Ende;Pause Minuten;Netto Stunden']; Object.keys(state.entries).sort().forEach(k=>{const [emp,month,day]=k.split('|'); state.entries[k].forEach(s=>{const h=hours(s.start,s.end,s.pause).toFixed(2).replace('.',','); lines.push([emp,month,pad(day)+'.'+month.split('-')[1]+'.'+month.split('-')[0],s.branch||'',s.role||'',s.plate||'',s.start||'',s.end||'',s.pause||0,h].join(';'))})}); const blob=new Blob([lines.join('\n')],{type:'text/csv;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='stunden_backup.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+load(); $('month').value=todayMonth(); $('addEmployeeBtn').onclick=addEmployee; $('deleteEmployeeBtn').onclick=deleteEmployee; $('addShiftBtn').onclick=()=>addShift(); $('employee').onchange=render; $('month').onchange=()=>{selectedDay=1;render()}; $('csvBtn').onclick=csv; $('clearBtn').onclick=()=>{if(confirm('Wirklich ALLE lokal gespeicherten Stunden löschen?')){localStorage.removeItem(STORAGE); state={employees:[],entries:{}}; render()}}; if('serviceWorker'in navigator){navigator.serviceWorker.register('./sw.js').catch(()=>{})} $('status').textContent='JavaScript läuft. App ist bereit.'; $('status').className='small ok'; render();
 })();
 </script>
 </body>
