@@ -53,7 +53,7 @@ function addEmp(){const n=$('employeeName').value.trim(); if(!n)return; if(!stat
 function delEmp(){const n=$('employeeSelect').value; if(!n)return; if(!confirm('Mitarbeiter wirklich löschen? Die gespeicherten Stunden bleiben im Speicher, werden aber nicht mehr angezeigt.'))return; state.employees=state.employees.filter(x=>x!==n); save(); renderEmployees(); renderAll();}
 function getDayShifts(){const md=getMonthData(); const d=$('dateInput').value; if(!md[d]) md[d]=[]; return md[d];}
 function addShift(){ensureDate(); const arr=getDayShifts(); arr.push({branch:'Schorndorf',role:'Service',plate:'',start:'',end:'',pause:0}); save(); renderAll();}
-function updateShift(i,field,val){const arr=getDayShifts(); if(!arr[i])return; arr[i][field]=val; if(field==='role'&&val!=='Fahrer') arr[i].plate=''; save(); renderAll(false);}
+function updateShift(i,field,val){const arr=getDayShifts(); if(!arr[i])return; arr[i][field]=val; if(field==='role'&&val!=='Fahrer') arr[i].plate=''; save(); renderAll(field==='role');}
 function removeShift(i){const arr=getDayShifts(); arr.splice(i,1); save(); renderAll();}
 function renderShifts(){
   const box=$('shifts'); box.innerHTML='';
