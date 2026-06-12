@@ -9,6 +9,7 @@
 <style>
 :root{--bg:#0b1222;--card:#111a2e;--line:#263653;--text:#f4f7fb;--muted:#a8b3c7;--green:#22c55e;--red:#ef4444;--yellow:#f59e0b;--field:#19243a}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);padding:18px 14px 120px}.wrap{max-width:860px;margin:0 auto}h1{font-size:28px;margin:8px 0 4px}.sub{color:var(--muted);font-size:15px;margin-bottom:18px}.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px;margin:14px 0;box-shadow:0 8px 24px rgba(0,0,0,.15)}label{display:block;color:var(--muted);font-size:14px;margin:12px 0 6px}input,select,button,textarea{font:inherit}input,select,textarea{width:100%;background:var(--field);border:1px solid var(--line);border-radius:14px;color:var(--text);padding:13px;outline:none}select{appearance:none}button{border:0;border-radius:16px;padding:14px 16px;font-weight:800;cursor:pointer;color:var(--text);background:#263653}.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.primary{background:var(--green);color:#04130a}.danger{background:#551717;color:#ffd6d6;border:1px solid #991b1b}.ghost{background:#1b2942}.small{font-size:14px;padding:10px 12px;border-radius:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.pillrow{display:flex;gap:8px;flex-wrap:wrap}.pill{padding:10px 12px;border-radius:999px;background:#202e48;color:#eaf0ff;border:1px solid var(--line)}.pill.active{background:var(--green);color:#03130a}.shift{border:1px solid var(--line);border-radius:18px;padding:14px;margin-top:12px;background:#0e1729}.netto{font-size:24px;font-weight:900;margin-top:12px}.big{font-size:48px;font-weight:900;line-height:1;margin:8px 0 0}.muted{color:var(--muted)}table{width:100%;border-collapse:collapse;margin-top:10px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--muted);font-weight:800}.right{text-align:right}.hidden{display:none!important}.bar{position:sticky;top:0;background:rgba(11,18,34,.94);backdrop-filter:blur(10px);padding:8px 0 10px;z-index:10}.login{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}.loginbox{width:100%;max-width:420px}.error{color:#ffcaca;background:#4a1212;border:1px solid #842020;padding:10px;border-radius:12px;margin-top:10px}.ok{color:#d5ffe2;background:#123d21;border:1px solid #277a3e;padding:10px;border-radius:12px;margin-top:10px}.report{background:#fff;color:#111;border-radius:14px;padding:22px;margin-top:14px}.report h2,.report h3{color:#111}.report .muted{color:#555}.report table th,.report table td{border-bottom:1px solid #ddd;color:#111}.report-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start}.brand{font-size:24px;font-weight:900}.report-shifts{display:flex;flex-direction:column;gap:10px;margin-top:10px}.report-shift{border:1px solid #ddd;border-radius:12px;padding:12px;background:#fff}.report-shift-top{display:flex;justify-content:space-between;gap:10px;font-weight:800;margin-bottom:8px}.report-shift-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:14px}.report-label{color:#555;font-size:12px;display:block}.report-value{color:#111}.report-total{text-align:right;font-weight:900;font-size:16px}.printonly{display:none}.empty{color:var(--muted);padding:12px 0}@media(max-width:520px){.grid,.grid3{grid-template-columns:1fr}.big{font-size:44px}.card{padding:16px}.report{padding:14px}.report-head{display:block}}@media print{body{background:#fff;color:#000;padding:0}.noPrint,.bar,.card:not(.printCard),.login{display:none!important}.printCard{display:block!important;background:#fff;border:0;box-shadow:none;border-radius:0;margin:0;padding:0}.report{display:block!important;border-radius:0;margin:0;padding:0}.printonly{display:block}.wrap{max-width:none}.report table{font-size:12px}h1{display:none}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 <div id="login" class="login hidden"><div class="loginbox card"><h1>Stunden-App</h1><p class="sub" id="loginText">PIN eingeben</p><input id="pinInput" type="password" inputmode="numeric" placeholder="PIN" autocomplete="off"><div class="btnrow"><button class="primary" id="pinBtn">Öffnen</button><button class="ghost" id="setPinBtn">PIN speichern</button></div><div id="pinMsg"></div></div></div>
@@ -125,7 +126,44 @@ function buildReport(){
   return `<div class="report-head"><div><div class="brand">Pits Burger</div><div class="muted">Monatsbericht Stunden</div></div><div><b>Mitarbeiter:</b> ${emp}<br><b>Monat:</b> ${month}<br><b>Arbeitstage:</b> ${workdays}<br><b>Gesamtstunden:</b> ${fmt(total)} h</div></div><hr><h3>Stunden nach Filiale</h3><table><thead><tr><th>Filiale</th><th class="right">Stunden</th></tr></thead><tbody>${bRows}</tbody></table><h3>Einzelne Schichten</h3><div class="report-shifts">${shiftCards}</div><p class="muted">Erstellt am ${new Date().toLocaleDateString('de-DE')}.</p>`;
 }
 function showReport(){ $('report').innerHTML=buildReport(); $('reportCard').classList.remove('hidden'); $('reportCard').scrollIntoView({behavior:'smooth'});}
-function exportExcel(){const html=`<!doctype html><html><head><meta charset='utf-8'><style>body{font-family:Arial}table{border-collapse:collapse}td,th{border:1px solid #ccc;padding:6px}th{background:#eee}.right{text-align:right}</style></head><body>${buildReport()}</body></html>`; const blob=new Blob([html],{type:'application/vnd.ms-excel'}); download(blob,`stunden_${($('employeeSelect').value||'mitarbeiter').replaceAll(' ','_')}_${$('monthInput').value||''}.xls`);}
+function exportExcel(){
+  if(!window.XLSX){alert('Excel-Export konnte nicht geladen werden. Bitte Internetverbindung prüfen und die Seite neu laden.');return;}
+  const emp=$('employeeSelect').value||'Mitarbeiter';
+  const month=$('monthInput').value||'';
+  const rows=allMonthShifts();
+  const total=rows.reduce((a,r)=>a+r.net,0);
+  const workdays=new Set(rows.filter(r=>r.net>0).map(r=>r.date)).size;
+  const branch=summaryBy('branch');
+  const data=[];
+  data.push(['Pits Burger Stundenbericht']);
+  data.push(['Mitarbeiter', emp]);
+  data.push(['Monat', month]);
+  data.push(['Arbeitstage', workdays]);
+  data.push(['Gesamtstunden', Number(total.toFixed(2))]);
+  data.push([]);
+  data.push(['Stunden nach Filiale']);
+  data.push(['Filiale','Stunden']);
+  branches.forEach(b=>data.push([b, Number((branch[b]||0).toFixed(2))]));
+  data.push([]);
+  data.push(['Einzelne Schichten']);
+  data.push(['Datum','Filiale','Bereich','Kennzeichen','Beginn','Ende','Pause Min.','Netto Stunden']);
+  rows.forEach(r=>data.push([
+    r.date ? r.date.split('-').reverse().join('.') : '',
+    r.branch||'',
+    r.role||'',
+    (r.role==='Fahrer' ? (r.plate||'') : ''),
+    r.start||'',
+    r.end||'',
+    Number(r.pause||0),
+    Number(r.net.toFixed(2))
+  ]));
+  const wb=XLSX.utils.book_new();
+  const ws=XLSX.utils.aoa_to_sheet(data);
+  ws['!cols']=[{wch:16},{wch:18},{wch:14},{wch:14},{wch:10},{wch:10},{wch:12},{wch:14}];
+  XLSX.utils.book_append_sheet(wb,ws,'Stundenbericht');
+  const safeEmp=emp.replace(/[^a-z0-9_-]+/gi,'_');
+  XLSX.writeFile(wb,`stunden_${safeEmp}_${month}.xlsx`);
+}
 function download(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
 function clearAll(){if(confirm('Wirklich ALLE Daten löschen?')){localStorage.removeItem(LS); state={employees:[],data:{}}; renderEmployees(); renderAll();}}
 function renderAll(full=true){ensureDate(); if(full)renderShifts(); renderTotals(); renderBranchSummary(); renderOverview();}
