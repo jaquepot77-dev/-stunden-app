@@ -55,10 +55,39 @@ function getDayShifts(){const md=getMonthData(); const d=$('dateInput').value; i
 function addShift(){ensureDate(); const arr=getDayShifts(); arr.push({branch:'Schorndorf',role:'Service',plate:'',start:'',end:'',pause:0}); save(); renderAll();}
 function updateShift(i,field,val){const arr=getDayShifts(); if(!arr[i])return; arr[i][field]=val; if(field==='role'&&val!=='Fahrer') arr[i].plate=''; save(); renderAll(false);}
 function removeShift(i){const arr=getDayShifts(); arr.splice(i,1); save(); renderAll();}
-function renderShifts(){const box=$('shifts'); box.innerHTML=''; if(!$('employeeSelect').value){box.innerHTML='<div class="empty">Bitte zuerst Mitarbeiter anlegen/auswählen.</div>';return;} const arr=getDayShifts(); if(arr.length===0){box.innerHTML='<div class="empty">Noch keine Schicht an diesem Tag.</div>';return;} arr.forEach((s,i)=>{const div=document.createElement('div'); div.className='shift'; const pauseId='p'+i; div.innerHTML=`<div class="grid"><div><label>Filiale</label><select data-i="${i}" data-f="branch">${branches.map(b=>`<option ${s.branch===b?'selected':''}>${b}</option>`).join('')}</select></div><div><label>Bereich</label><select data-i="${i}" data-f="role">${roles.map(r=>`<option ${s.role===r?'selected':''}>${r}</option>`).join('')}</select></div></div>${s.role==='Fahrer'?`<label>Kennzeichen</label><select data-i="${i}" data-f="plate"><option value="">Bitte wählen</option>${plates.map(p=>`<option ${s.plate===p?'selected':''}>${p}</option>`).join('')}</select>`:''}<div class="grid3"><div><label>Beginn</label><input type="time" value="${s.start||''}" data-i="${i}" data-f="start"></div><div><label>Ende</label><input type="time" value="${s.end||''}" data-i="${i}" data-f="end"></div><div><label>Pause</label><input type="number" inputmode="numeric" min="0" step="5" value="${s.pause||0}" data-i="${i}" data-f="pause"></div></div><div class="pillrow" id="${pauseId}">${[0,15,30,45,60,75,90,120].map(p=>`<button type="button" class="pill ${Number(s.pause)===p?'active':''}" data-pause="${p}" data-i="${i}">${p}</button>`).join('')}</div><div class="netto">Netto: ${fmt(calc(s))} h</div><div class="btnrow"><button class="danger small" data-del="${i}">Schicht löschen</button></div>`; box.appendChild(div);});
-box.querySelectorAll('[data-f]').forEach(el=>el.onchange=e=>updateShift(Number(el.dataset.i),el.dataset.f,el.value));
-box.querySelectorAll('[data-pause]').forEach(el=>el.onclick=e=>updateShift(Number(el.dataset.i),'pause',Number(el.dataset.pause)));
-box.querySelectorAll('[data-del]').forEach(el=>el.onclick=e=>removeShift(Number(el.dataset.del)));
+function renderShifts(){
+  const box=$('shifts'); box.innerHTML='';
+  if(!$('employeeSelect').value){box.innerHTML='<div class="empty">Bitte zuerst Mitarbeiter anlegen/auswählen.</div>';return;}
+  const arr=getDayShifts();
+  if(arr.length===0){box.innerHTML='<div class="empty">Noch keine Schicht an diesem Tag. Tippe auf „+ Schicht“.</div>';return;}
+  arr.forEach((s,i)=>{
+    const div=document.createElement('div'); div.className='shift';
+    const pauseButtons=[0,15,30,45,60,75,90,120];
+    div.innerHTML=`
+      <div class="grid">
+        <div><label>Filiale</label><select data-i="${i}" data-f="branch">${branches.map(b=>`<option ${s.branch===b?'selected':''}>${b}</option>`).join('')}</select></div>
+        <div><label>Bereich</label><select data-i="${i}" data-f="role">${roles.map(r=>`<option ${s.role===r?'selected':''}>${r}</option>`).join('')}</select></div>
+      </div>
+      <label>Kennzeichen ${s.role==='Fahrer'?'':'(nur bei Fahrer nötig)'}</label>
+      <select data-i="${i}" data-f="plate" ${s.role==='Fahrer'?'':'disabled'}>
+        <option value="">${s.role==='Fahrer'?'Bitte wählen':'Nicht nötig'}</option>
+        ${plates.map(p=>`<option value="${p}" ${s.plate===p?'selected':''}>${p}</option>`).join('')}
+      </select>
+      <div class="grid3">
+        <div><label>Beginn</label><input type="time" value="${s.start||''}" data-i="${i}" data-f="start"></div>
+        <div><label>Ende</label><input type="time" value="${s.end||''}" data-i="${i}" data-f="end"></div>
+        <div><label>Pause in Minuten</label><input type="tel" inputmode="numeric" pattern="[0-9]*" placeholder="z. B. 60" value="${s.pause||0}" data-i="${i}" data-f="pause"></div>
+      </div>
+      <label>Schnelle Pause</label>
+      <div class="pillrow">${pauseButtons.map(p=>`<button type="button" class="pill ${Number(s.pause)===p?'active':''}" data-pause="${p}" data-i="${i}">${p} Min</button>`).join('')}</div>
+      <div class="netto">Netto: ${fmt(calc(s))} h</div>
+      <div class="btnrow"><button class="danger small" data-del="${i}">Schicht löschen</button></div>`;
+    box.appendChild(div);
+  });
+  box.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',e=>updateShift(Number(e.target.dataset.i),e.target.dataset.f,e.target.value)));
+  box.querySelectorAll('input').forEach(el=>el.addEventListener('input',e=>updateShift(Number(e.target.dataset.i),e.target.dataset.f,e.target.value)));
+  box.querySelectorAll('[data-pause]').forEach(btn=>btn.addEventListener('click',e=>{const i=Number(e.currentTarget.dataset.i); updateShift(i,'pause',Number(e.currentTarget.dataset.pause));}));
+  box.querySelectorAll('[data-del]').forEach(btn=>btn.addEventListener('click',e=>{getDayShifts().splice(Number(e.currentTarget.dataset.del),1); save(); renderAll();}));
 }
 function allMonthShifts(){const md=getMonthData(); let rows=[]; Object.keys(md).sort().forEach(d=>{(md[d]||[]).forEach(s=>{rows.push({date:d,...s,net:calc(s)})})}); return rows;}
 function renderTotals(){const d=$('dateInput').value; const arr=(getMonthData()[d]||[]); const day=arr.reduce((a,s)=>a+calc(s),0); const rows=allMonthShifts(); const month=rows.reduce((a,s)=>a+s.net,0); $('dayTotal').textContent=fmt(day)+' h'; $('monthTotal').textContent=fmt(month)+' h';}
