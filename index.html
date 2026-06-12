@@ -16,9 +16,13 @@
   <div class="bar noPrint"><h1>Pits Burger Stunden</h1><div class="sub">Offline-App · Daten bleiben im Browser auf deinem Gerät</div></div>
   <div class="card noPrint">
     <h2>Mitarbeiter</h2>
-    <div class="grid"><div><label>Mitarbeiter auswählen</label><select id="employeeSelect"></select></div><div><label>Monat</label><input id="monthInput" type="month"></div></div>
-    <div class="grid"><div><label>Neuer Mitarbeiter</label><input id="employeeName" placeholder="Name eingeben"></div><div style="display:flex;align-items:end;gap:8px"><button class="primary" id="addEmployee">Hinzufügen</button><button class="danger" id="deleteEmployee">Löschen</button></div></div>
-    <div class="btnrow"><button class="ghost small" id="changePin">PIN ändern</button></div>
+    <label>Neuen Mitarbeiter eintragen</label>
+    <div class="grid"><input id="employeeName" placeholder="Name eingeben"><button class="primary" id="addEmployee">Mitarbeiter hinzufügen</button></div>
+    <label>Mitarbeiter auswählen</label>
+    <select id="employeeSelect"></select>
+    <label>Monat auswählen</label>
+    <input id="monthInput" type="month">
+    <div class="btnrow"><button class="danger small" id="deleteEmployee">Ausgewählten Mitarbeiter löschen</button><button class="ghost small" id="changePin">PIN ändern</button></div>
   </div>
   <div class="card noPrint">
     <h2>Tag</h2>
@@ -86,7 +90,8 @@ function renderShifts(){
   });
   box.querySelectorAll('input,select').forEach(el=>el.addEventListener('change',e=>updateShift(Number(e.target.dataset.i),e.target.dataset.f,e.target.value)));
   box.querySelectorAll('input').forEach(el=>el.addEventListener('input',e=>updateShift(Number(e.target.dataset.i),e.target.dataset.f,e.target.value)));
-  box.querySelectorAll('[data-pause]').forEach(btn=>btn.addEventListener('click',e=>{const i=Number(e.currentTarget.dataset.i); updateShift(i,'pause',Number(e.currentTarget.dataset.pause));}));
+  function pauseClick(e){ e.preventDefault(); e.stopPropagation(); const i=Number(e.currentTarget.dataset.i); const val=Number(e.currentTarget.dataset.pause); const arr=getDayShifts(); if(arr[i]){arr[i].pause=val; save(); renderAll();} }
+  box.querySelectorAll('[data-pause]').forEach(btn=>{btn.addEventListener('click',pauseClick); btn.addEventListener('touchend',pauseClick,{passive:false});});
   box.querySelectorAll('[data-del]').forEach(btn=>btn.addEventListener('click',e=>{getDayShifts().splice(Number(e.currentTarget.dataset.del),1); save(); renderAll();}));
 }
 function allMonthShifts(){const md=getMonthData(); let rows=[]; Object.keys(md).sort().forEach(d=>{(md[d]||[]).forEach(s=>{rows.push({date:d,...s,net:calc(s)})})}); return rows;}
