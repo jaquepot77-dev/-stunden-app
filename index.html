@@ -1,91 +1,76 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#111827" />
-  <title>Pits Burger Stundenerfassung</title>
-  <link rel="manifest" href="manifest.json" />
-  <style>
-    :root{--bg:#f3f4f6;--card:#fff;--text:#111827;--muted:#6b7280;--line:#e5e7eb;--dark:#111827;--accent:#f59e0b;--danger:#dc2626;--ok:#16a34a}
-    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    header{position:sticky;top:0;z-index:5;background:var(--dark);color:white;padding:16px 14px;padding-top:calc(16px + env(safe-area-inset-top));box-shadow:0 2px 8px rgba(0,0,0,.15)}
-    header h1{font-size:19px;margin:0 0 4px;font-weight:800} header p{margin:0;color:#d1d5db;font-size:13px}
-    main{padding:14px;max-width:900px;margin:0 auto 80px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
-    label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-    input,select,button,textarea{width:100%;font:inherit;border-radius:12px;border:1px solid #d1d5db;padding:11px;background:white;color:var(--text)} button{border:0;background:var(--dark);color:white;font-weight:800;cursor:pointer} button.secondary{background:#e5e7eb;color:#111827}button.danger{background:var(--danger)}button.ok{background:var(--ok)}
-    .summary{display:grid;grid-template-columns:1fr 1fr;gap:10px}.box{background:#f9fafb;border:1px solid var(--line);border-radius:14px;padding:12px}.box .num{font-size:24px;font-weight:900;margin-top:3px}.box .small{font-size:12px;color:var(--muted);font-weight:700}
-    .row{display:grid;grid-template-columns:44px 1fr;gap:8px;align-items:start;border-top:1px solid var(--line);padding:12px 0}.day{font-weight:900;font-size:17px;padding-top:12px;text-align:center}.day span{display:block;font-size:11px;color:var(--muted);font-weight:700}.entry{display:grid;gap:8px}.totalLine{font-weight:900;text-align:right}.hint{font-size:12px;color:var(--muted);line-height:1.35}.status{font-size:13px;font-weight:800;color:var(--ok)}.error{color:var(--danger);font-weight:800;font-size:13px;white-space:pre-wrap}.tabs{display:flex;gap:8px;margin-bottom:12px}.tabs button{padding:10px}.tabs button.active{background:var(--accent);color:#111827}.hidden{display:none}.pill{display:inline-block;background:#fef3c7;border:1px solid #fcd34d;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:800;color:#92400e}.footerBar{position:fixed;left:0;right:0;bottom:0;background:white;border-top:1px solid var(--line);padding:10px 14px;padding-bottom:calc(10px + env(safe-area-inset-bottom));display:grid;grid-template-columns:1fr 1fr;gap:10px;z-index:10}
-    @media(min-width:720px){.entry{grid-template-columns:1.2fr 1fr 1fr 1fr 1fr}.totalLine{text-align:left}.grid{grid-template-columns:1fr 1fr 1fr 1fr}.footerBar{position:static;max-width:900px;margin:0 auto 20px;border:1px solid var(--line);border-radius:16px}}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Pits Burger Stunden</title>
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#0b1220;--card:#111827;--muted:#94a3b8;--text:#f8fafc;--accent:#22c55e;--danger:#ef4444;--line:#263244;--input:#0f172a}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--text);padding:14px}h1{font-size:24px;margin:8px 0 14px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;box-shadow:0 8px 20px rgba(0,0,0,.18)}label{display:block;font-size:13px;color:var(--muted);margin:10px 0 5px}input,select,button,textarea{width:100%;font-size:16px;border-radius:12px;border:1px solid var(--line);padding:11px;background:var(--input);color:var(--text)}button{background:#1f2937;font-weight:700}button.primary{background:var(--accent);color:#052e16;border:0}button.danger{background:#3b1116;color:#fecaca;border-color:#7f1d1d}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}.muted{color:var(--muted);font-size:13px}.total{font-size:28px;font-weight:800}.shift{border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;background:#0b1220}.shift-head{display:flex;justify-content:space-between;gap:10px;align-items:center}.shift-title{font-weight:800}.smallbtn{width:auto;padding:8px 10px;font-size:13px}.day{border-top:1px solid var(--line);padding:12px 0}.day:first-child{border-top:0}.day-title{display:flex;justify-content:space-between;align-items:center;gap:10px}.badge{font-size:13px;background:#172033;border:1px solid var(--line);padding:6px 9px;border-radius:999px}.hidden{display:none}.footer{height:40px}.ok{color:#86efac}.warn{color:#fde68a}.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}textarea{height:120px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}a{color:#60a5fa}.hint{background:#132014;border:1px solid #315c35;border-radius:12px;padding:10px;margin-top:10px;color:#d9f99d}
+</style>
 </head>
 <body>
-<header><h1>Pits Burger Stundenerfassung</h1><p id="jsStatus">JavaScript läuft noch nicht.</p></header>
-<main>
-  <div class="tabs"><button id="tabHours" class="active" type="button">Stunden</button><button id="tabStaff" type="button">Mitarbeiter</button><button id="tabBackup" type="button">Backup</button></div>
+<h1>🍔 Pits Burger Stunden</h1>
+<div class="card">
+  <div id="status" class="ok">JavaScript läuft. App ist bereit.</div>
+  <label>Mitarbeiter</label>
+  <select id="employeeSelect"></select>
+  <div class="row">
+    <div><label>Neuer Mitarbeiter</label><input id="newEmployee" placeholder="Name eingeben"></div>
+    <div style="display:flex;align-items:end"><button class="primary" id="addEmployeeBtn">Hinzufügen</button></div>
+  </div>
+  <div class="row">
+    <div><label>Monat</label><input type="month" id="monthInput"></div>
+    <div><label>Monatssumme</label><div class="total"><span id="monthTotal">0,00</span> h</div></div>
+  </div>
+  <div class="hint">Neu: Pro Tag kannst du mehrere Schichten eintragen, z. B. vormittags Schorndorf und abends Plüderhausen.</div>
+</div>
 
-  <section id="hoursView">
-    <div class="card">
-      <div class="grid">
-        <div><label>Mitarbeiter</label><select id="employeeSelect"></select></div>
-        <div><label>Monat</label><input id="monthInput" type="month"></div>
-        <div><label>Sollstunden optional</label><input id="targetHours" inputmode="decimal" placeholder="z.B. 173"></div>
-        <div><label>&nbsp;</label><button id="todayBtn" type="button" class="secondary">Aktueller Monat</button></div>
-      </div>
-    </div>
-    <div class="card summary">
-      <div class="box"><div class="small">Monat gesamt</div><div id="monthTotal" class="num">0,00 h</div></div>
-      <div class="box"><div class="small">Differenz zu Soll</div><div id="diffTotal" class="num">—</div></div>
-    </div>
-    <div class="card"><span class="pill">Tipp</span><p class="hint">Beispiel: Beginn 11:00, Pause 60, Ende 22:00 = 10,00 Stunden netto. Änderungen werden automatisch auf diesem Gerät gespeichert.</p></div>
-    <div id="daysList" class="card"></div>
-  </section>
+<div class="card">
+  <div class="actions">
+    <button id="exportBtn">CSV exportieren</button>
+    <button id="backupBtn">Backup kopieren</button>
+  </div>
+  <label>Backup einfügen</label>
+  <textarea id="backupText" placeholder="Backup hier einfügen..."></textarea>
+  <button id="restoreBtn">Backup wiederherstellen</button>
+</div>
 
-  <section id="staffView" class="hidden">
-    <div class="card">
-      <label>Neuen Mitarbeiter anlegen</label>
-      <div class="grid"><input id="newEmployeeName" placeholder="Name Mitarbeiter"><button id="addEmployeeBtn" type="button">Hinzufügen</button></div>
-      <p id="staffMsg" class="hint"></p>
-    </div>
-    <div class="card"><label>Mitarbeiterliste</label><div id="employeeList"></div></div>
-  </section>
-
-  <section id="backupView" class="hidden">
-    <div class="card"><button id="exportCsvBtn" type="button" class="ok">CSV für ausgewählten Monat exportieren</button><p class="hint">CSV kannst du später in Excel öffnen.</p></div>
-    <div class="card"><button id="copyBackupBtn" type="button">Backup kopieren</button><p class="hint">Kopiert alle Daten als Text. Sicher dir das ab und zu in Notizen oder WhatsApp an dich selbst.</p><textarea id="backupText" rows="5" placeholder="Backup erscheint hier oder zum Wiederherstellen einfügen"></textarea><button id="restoreBtn" type="button" class="secondary">Backup wiederherstellen</button><p id="backupMsg" class="hint"></p></div>
-  </section>
-  <div id="err" class="error"></div>
-</main>
-<div class="footerBar"><button id="saveBtn" type="button">Speichern</button><button id="clearMonthBtn" type="button" class="danger">Monat leeren</button></div>
+<div id="days" class="card"></div>
+<div class="footer"></div>
 <script>
 (function(){
-'use strict';
-const KEY='pitsburger_hours_v1';
-const branches=['Schorndorf','Plüderhausen','Urbach'];
-const weekdays=['So','Mo','Di','Mi','Do','Fr','Sa'];
-let state={employees:['Mitarbeiter 1','Mitarbeiter 2','Mitarbeiter 3','Mitarbeiter 4','Mitarbeiter 5','Mitarbeiter 6','Mitarbeiter 7','Mitarbeiter 8','Mitarbeiter 9','Mitarbeiter 10','Mitarbeiter 11','Mitarbeiter 12','Mitarbeiter 13','Mitarbeiter 14','Mitarbeiter 15','Mitarbeiter 16','Mitarbeiter 17','Mitarbeiter 18','Mitarbeiter 19','Mitarbeiter 20'],entries:{},targets:{}};
+const STORAGE_KEY='pits_stunden_app_v_multi_shift_1';
+const filialen=['Schorndorf','Plüderhausen','Urbach'];
+const defaultEmployees=Array.from({length:20},(_,i)=>'Mitarbeiter '+(i+1));
+let state=load();
 const $=id=>document.getElementById(id);
-function err(e){$('err').textContent='Fehler: '+(e&&e.message?e.message:e);}
-function load(){try{const raw=localStorage.getItem(KEY); if(raw) state=JSON.parse(raw);}catch(e){err(e)}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state)); $('jsStatus').textContent='Gespeichert. App ist bereit.';}catch(e){err(e)}}
-function ym(){return $('monthInput').value;} function emp(){return $('employeeSelect').value;} function key(day){return emp()+'|'+ym()+'|'+day;}
-function timeToMin(t){if(!t)return null; const p=t.split(':'); return parseInt(p[0],10)*60+parseInt(p[1],10)}
-function calc(start,end,pause){const s=timeToMin(start), e=timeToMin(end), p=parseInt(pause||0,10)||0; if(s===null||e===null)return 0; let diff=e-s; if(diff<0) diff+=1440; diff-=p; return Math.max(0,diff/60)}
-function monthDays(){const [y,m]=ym().split('-').map(Number); return new Date(y,m,0).getDate()}
-function defaultMonth(){const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')}
-function renderEmployees(){const sel=$('employeeSelect'); sel.innerHTML=''; state.employees.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=n;sel.appendChild(o)}); const list=$('employeeList'); list.innerHTML=''; state.employees.forEach((n,i)=>{const wrap=document.createElement('div');wrap.className='row';wrap.innerHTML='<div class="day">'+(i+1)+'</div><div class="grid"><input value="'+escapeHtml(n)+'" data-empidx="'+i+'"><button type="button" class="danger" data-del="'+i+'">Löschen</button></div>'; list.appendChild(wrap)});}
-function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
-function renderDays(){const dl=$('daysList'); dl.innerHTML=''; if(!emp()||!ym())return; const days=monthDays(); for(let d=1;d<=days;d++){const date=new Date(ym()+'-'+String(d).padStart(2,'0')+'T12:00:00'); const e=state.entries[key(d)]||{}; const row=document.createElement('div');row.className='row'; row.innerHTML='<div class="day">'+d+'<span>'+weekdays[date.getDay()]+'</span></div><div class="entry"><select data-day="'+d+'" data-field="branch">'+branches.map(b=>'<option '+(e.branch===b?'selected':'')+'>'+b+'</option>').join('')+'</select><input type="time" data-day="'+d+'" data-field="start" value="'+(e.start||'')+'"><input type="number" inputmode="numeric" min="0" step="5" placeholder="Pause min" data-day="'+d+'" data-field="pause" value="'+(e.pause||'')+'"><input type="time" data-day="'+d+'" data-field="end" value="'+(e.end||'')+'"><div class="totalLine" id="total-'+d+'">0,00 h</div></div>'; dl.appendChild(row); updateDayTotal(d);} updateTotals();}
-function updateDayTotal(d){const e=state.entries[key(d)]||{}; const h=calc(e.start,e.end,e.pause); const el=$('total-'+d); if(el) el.textContent=h.toFixed(2).replace('.',',')+' h';}
-function updateTotals(){let sum=0; for(let d=1;d<=monthDays();d++){const e=state.entries[key(d)]||{}; sum+=calc(e.start,e.end,e.pause)} $('monthTotal').textContent=sum.toFixed(2).replace('.',',')+' h'; const t=parseFloat(String($('targetHours').value||'').replace(',','.')); state.targets[emp()+'|'+ym()]=$('targetHours').value; if(!isNaN(t)&&t>0){const diff=sum-t; $('diffTotal').textContent=(diff>=0?'+':'')+diff.toFixed(2).replace('.',',')+' h';} else $('diffTotal').textContent='—';}
-function setTab(name){['hours','staff','backup'].forEach(v=>$(v+'View').classList.toggle('hidden',v!==name)); $('tabHours').classList.toggle('active',name==='hours'); $('tabStaff').classList.toggle('active',name==='staff'); $('tabBackup').classList.toggle('active',name==='backup');}
-function exportCsv(){let rows=[['Mitarbeiter','Monat','Tag','Filiale','Beginn','Ende','Pause Minuten','Netto Stunden']]; for(let d=1;d<=monthDays();d++){const e=state.entries[key(d)]||{}; const h=calc(e.start,e.end,e.pause); if(e.start||e.end||e.pause) rows.push([emp(),ym(),d,e.branch||'',e.start||'',e.end||'',e.pause||'',h.toFixed(2)]);} const csv=rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(';')).join('\n'); const blob=new Blob([csv],{type:'text/csv;charset=utf-8'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='stunden_'+emp().replace(/\s+/g,'_')+'_'+ym()+'.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);}
-function bind(){document.body.addEventListener('input',ev=>{const t=ev.target; if(t.dataset&&t.dataset.day){const d=t.dataset.day; const k=key(d); state.entries[k]=state.entries[k]||{}; state.entries[k][t.dataset.field]=t.value; updateDayTotal(d); updateTotals(); save();} if(t.dataset&&t.dataset.empidx!==undefined){state.employees[parseInt(t.dataset.empidx,10)]=t.value; save(); renderEmployees(); renderDays();} if(t.id==='targetHours'){updateTotals(); save();}});
-$('addEmployeeBtn').onclick=()=>{const n=$('newEmployeeName').value.trim(); if(!n){$('staffMsg').textContent='Bitte Namen eingeben.'; return;} state.employees.push(n); $('newEmployeeName').value=''; $('staffMsg').textContent='Mitarbeiter wurde angelegt.'; save(); renderEmployees();};
-document.body.addEventListener('click',ev=>{const t=ev.target; if(t.dataset&&t.dataset.del!==undefined){const i=parseInt(t.dataset.del,10); if(confirm('Mitarbeiter löschen?')){state.employees.splice(i,1); save(); renderEmployees(); renderDays();}}});
-$('employeeSelect').onchange=()=>{const tv=state.targets[emp()+'|'+ym()]||''; $('targetHours').value=tv; renderDays();}; $('monthInput').onchange=()=>{const tv=state.targets[emp()+'|'+ym()]||''; $('targetHours').value=tv; renderDays();}; $('todayBtn').onclick=()=>{$('monthInput').value=defaultMonth(); renderDays();}; $('saveBtn').onclick=save; $('clearMonthBtn').onclick=()=>{if(confirm('Alle Einträge für diesen Mitarbeiter und Monat löschen?')){for(let d=1;d<=monthDays();d++) delete state.entries[key(d)]; save(); renderDays();}}; $('exportCsvBtn').onclick=exportCsv; $('copyBackupBtn').onclick=async()=>{const txt=JSON.stringify(state); $('backupText').value=txt; try{await navigator.clipboard.writeText(txt); $('backupMsg').textContent='Backup wurde kopiert.';}catch(e){$('backupMsg').textContent='Backup steht im Textfeld. Bitte manuell kopieren.';}}; $('restoreBtn').onclick=()=>{try{const data=JSON.parse($('backupText').value); if(!data.employees||!data.entries) throw new Error('Ungültiges Backup'); state=data; save(); renderEmployees(); renderDays(); $('backupMsg').textContent='Backup wiederhergestellt.';}catch(e){$('backupMsg').textContent='Backup konnte nicht gelesen werden.';}}; $('tabHours').onclick=()=>setTab('hours'); $('tabStaff').onclick=()=>setTab('staff'); $('tabBackup').onclick=()=>setTab('backup');}
-function init(){load(); $('monthInput').value=defaultMonth(); renderEmployees(); $('targetHours').value=state.targets[emp()+'|'+ym()]||''; renderDays(); bind(); $('jsStatus').textContent='JavaScript läuft. App ist bereit.'; if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{});} }
-try{init();}catch(e){err(e)}
+function load(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY))||{employees:defaultEmployees,entries:{}}}catch(e){return{employees:defaultEmployees,entries:{}}}}
+function save(){localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+function pad(n){return String(n).padStart(2,'0')}
+function todayMonth(){const d=new Date();return d.getFullYear()+'-'+pad(d.getMonth()+1)}
+function daysInMonth(ym){const [y,m]=ym.split('-').map(Number);return new Date(y,m,0).getDate()}
+function calcHours(start,end,pause){if(!start||!end)return 0;const [sh,sm]=start.split(':').map(Number);const [eh,em]=end.split(':').map(Number);let s=sh*60+sm,e=eh*60+em;if(e<s)e+=24*60;let mins=e-s-(Number(pause)||0);return Math.max(0,mins/60)}
+function key(emp,ym,day){return emp+'|'+ym+'|'+day}
+function getShifts(emp,ym,day){const k=key(emp,ym,day); if(!state.entries[k]) state.entries[k]=[]; return state.entries[k];}
+function renderEmployees(){const sel=$('employeeSelect');sel.innerHTML='';state.employees.forEach(name=>{const o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);});}
+function render(){renderEmployees(); if(!$('monthInput').value) $('monthInput').value=todayMonth(); renderDays();}
+function renderDays(){const emp=$('employeeSelect').value;const ym=$('monthInput').value||todayMonth();const wrap=$('days');let total=0;wrap.innerHTML='<div class="muted">Monat: '+ym+' · Mitarbeiter: '+emp+'</div>';for(let d=1;d<=daysInMonth(ym);d++){const shifts=getShifts(emp,ym,d);let dayTotal=shifts.reduce((a,s)=>a+calcHours(s.start,s.end,s.pause),0);total+=dayTotal;const day=document.createElement('div');day.className='day';day.innerHTML='<div class="day-title"><strong>'+pad(d)+'.</strong><span class="badge">'+dayTotal.toFixed(2).replace('.',',')+' h</span></div><div id="shifts_'+d+'"></div><button class="smallbtn primary" data-add="'+d+'">+ Schicht hinzufügen</button>';wrap.appendChild(day);const sw=day.querySelector('#shifts_'+d);if(shifts.length===0){const p=document.createElement('div');p.className='muted';p.style.margin='8px 0';p.textContent='Keine Schicht eingetragen';sw.appendChild(p)}shifts.forEach((s,idx)=>{const div=document.createElement('div');div.className='shift';div.innerHTML='<div class="shift-head"><div class="shift-title">Schicht '+(idx+1)+' · '+calcHours(s.start,s.end,s.pause).toFixed(2).replace('.',',')+' h</div><button class="smallbtn danger" data-del="'+d+'|'+idx+'">Löschen</button></div><label>Filiale</label><select data-field="filiale" data-day="'+d+'" data-idx="'+idx+'">'+filialen.map(f=>'<option '+(s.filiale===f?'selected':'')+'>'+f+'</option>').join('')+'</select><div class="row3"><div><label>Beginn</label><input type="time" value="'+(s.start||'')+'" data-field="start" data-day="'+d+'" data-idx="'+idx+'"></div><div><label>Ende</label><input type="time" value="'+(s.end||'')+'" data-field="end" data-day="'+d+'" data-idx="'+idx+'"></div><div><label>Pause Min.</label><input type="number" min="0" step="5" value="'+(s.pause||0)+'" data-field="pause" data-day="'+d+'" data-idx="'+idx+'"></div></div><label>Notiz</label><input placeholder="optional" value="'+(s.note||'').replace(/"/g,'&quot;')+'" data-field="note" data-day="'+d+'" data-idx="'+idx+'">';sw.appendChild(div);});}
+$('monthTotal').textContent=total.toFixed(2).replace('.',',');}
+function addShift(day){const emp=$('employeeSelect').value,ym=$('monthInput').value;getShifts(emp,ym,day).push({filiale:'Schorndorf',start:'',end:'',pause:0,note:''});save();renderDays();}
+function updateShift(day,idx,field,value){const emp=$('employeeSelect').value,ym=$('monthInput').value;const shifts=getShifts(emp,ym,day);if(!shifts[idx])return;shifts[idx][field]=value;save();renderDays();}
+function delShift(day,idx){const emp=$('employeeSelect').value,ym=$('monthInput').value;getShifts(emp,ym,day).splice(idx,1);save();renderDays();}
+function addEmployee(){const name=$('newEmployee').value.trim();if(!name)return alert('Bitte Namen eingeben.');if(state.employees.includes(name))return alert('Mitarbeiter gibt es schon.');state.employees.push(name);$('newEmployee').value='';save();render();$('employeeSelect').value=name;renderDays();}
+function csvEscape(v){return '"'+String(v??'').replace(/"/g,'""')+'"'}
+function exportCsv(){const emp=$('employeeSelect').value,ym=$('monthInput').value;let rows=[['Mitarbeiter','Monat','Tag','Filiale','Beginn','Ende','Pause Minuten','Netto Stunden','Notiz']];for(let d=1;d<=daysInMonth(ym);d++){getShifts(emp,ym,d).forEach(s=>rows.push([emp,ym,pad(d),s.filiale,s.start,s.end,s.pause,calcHours(s.start,s.end,s.pause).toFixed(2),s.note||'']));}
+const csv=rows.map(r=>r.map(csvEscape).join(';')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='stunden_'+emp.replace(/\s+/g,'_')+'_'+ym+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+function backup(){const txt=JSON.stringify(state);navigator.clipboard?.writeText(txt).then(()=>alert('Backup wurde kopiert.')).catch(()=>{$('backupText').value=txt;alert('Backup steht im Textfeld. Bitte kopieren.');});}
+function restore(){try{const data=JSON.parse($('backupText').value);if(!data.employees||!data.entries)throw new Error();state=data;save();render();alert('Backup wiederhergestellt.');}catch(e){alert('Backup konnte nicht gelesen werden.');}}
+$('addEmployeeBtn').addEventListener('click',addEmployee);$('employeeSelect').addEventListener('change',renderDays);$('monthInput').addEventListener('change',renderDays);$('exportBtn').addEventListener('click',exportCsv);$('backupBtn').addEventListener('click',backup);$('restoreBtn').addEventListener('click',restore);
+$('days').addEventListener('click',e=>{if(e.target.dataset.add)addShift(Number(e.target.dataset.add)); if(e.target.dataset.del){const [d,i]=e.target.dataset.del.split('|').map(Number);delShift(d,i);}});
+$('days').addEventListener('change',e=>{const t=e.target;if(t.dataset.field)updateShift(Number(t.dataset.day),Number(t.dataset.idx),t.dataset.field,t.value);});
+$('days').addEventListener('input',e=>{const t=e.target;if(t.dataset.field)updateShift(Number(t.dataset.day),Number(t.dataset.idx),t.dataset.field,t.value);});
+render();
 })();
 </script>
 </body>
